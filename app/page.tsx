@@ -26,53 +26,40 @@ export default function Home() {
 
   return (
     <main className={`min-h-screen bg-black text-white overflow-hidden`}>
-      <motion.div
-        className="fixed inset-0 pointer-events-none"
-        animate={{
-          background: [
-            'radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%)',
-            'radial-gradient(circle, rgba(238,174,202,0.5) 0%, rgba(148,187,233,0.5) 100%)',
-            'radial-gradient(circle, rgba(174,238,182,1) 0%, rgba(148,233,233,1) 100%)',
-            'radial-gradient(circle, rgba(174,238,182,0.5) 0%, rgba(148,233,233,0.5) 100%)',
-          ]
-        }}
-        transition={{ duration: 10, repeat: Infinity, repeatType: 'reverse' }}
-      />
+      <div className={`${isAuthDrawerOpen ? 'blur-sm' : ''} transition-all duration-300`}>
+        <Header />
+        
+        <HeroSection onTryClick={() => setIsAuthDrawerOpen(true)} />
 
-      <motion.div
-        className="fixed inset-0 pointer-events-none"
-        style={{
-          background: `radial-gradient(circle 100px at ${mousePosition.x}px ${mousePosition.y}px, rgba(255,255,255,0.2), transparent 50%)`
-        }}
-      />
+        <div className="bg-white">
+          <FeaturesSection />
 
-      <Header />
-      
-      <HeroSection onTryClick={() => setIsAuthDrawerOpen(true)} />
+          <HowItWorksSection />
 
-      <FeaturesSection />
+          <GetStartedSection />
 
-      <HowItWorksSection />
+          <Footer />
+        </div>
 
-      <GetStartedSection />
+        <motion.div
+          className="fixed bottom-4 right-4 text-2xl"
+          animate={{ rotate: 360 }}
+          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+        >
+          🎨
+        </motion.div>
+      </div>
 
-      <Footer />
-
-      <motion.div
-        className="fixed bottom-4 right-4 text-2xl"
-        animate={{ rotate: 360 }}
-        transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-      >
-        🎨
-      </motion.div>
-
-      <div 
-        className={`fixed inset-0 bg-black/30 backdrop-blur-sm transition-opacity duration-300 ${isAuthDrawerOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+      <div
+        className={`fixed inset-0 bg-black/30 backdrop-blur-sm transition-opacity duration-300 ${
+          isAuthDrawerOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
         onClick={() => setIsAuthDrawerOpen(false)}
       />
-
       <AuthDrawer isOpen={isAuthDrawerOpen} onClose={() => setIsAuthDrawerOpen(false)}>
-        <AuthDrawerContent />
+        <div onClick={(e) => e.stopPropagation()}>
+          <AuthDrawerContent />
+        </div>
       </AuthDrawer>
     </main>
   )
@@ -127,7 +114,7 @@ function HeroSection({ onTryClick }: { onTryClick: () => void }) {
   return (
     <motion.section
       ref={ref}
-      className="min-h-screen flex items-center justify-center relative"
+      className="min-h-screen flex items-center justify-center relative overflow-hidden"
       initial="hidden"
       animate={controls}
       variants={{
@@ -135,6 +122,18 @@ function HeroSection({ onTryClick }: { onTryClick: () => void }) {
         visible: { opacity: 1, transition: { duration: 0.5 } }
       }}
     >
+      <motion.div
+        className="absolute inset-0 pointer-events-none"
+        animate={{
+          background: [
+            'radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%)',
+            'radial-gradient(circle, rgba(238,174,202,0.5) 0%, rgba(148,187,233,0.5) 100%)',
+            'radial-gradient(circle, rgba(174,238,182,1) 0%, rgba(148,233,233,1) 100%)',
+            'radial-gradient(circle, rgba(174,238,182,0.5) 0%, rgba(148,233,233,0.5) 100%)',
+          ]
+        }}
+        transition={{ duration: 10, repeat: Infinity, repeatType: 'reverse' }}
+      />
       <div className="text-center z-10">
         <motion.h2
           className="text-6xl font-bold mb-4"
@@ -236,7 +235,7 @@ function FeaturesSection() {
     >
       <div className="container mx-auto">
         <motion.h2
-          className="text-4xl font-bold text-center mb-12"
+          className="text-4xl font-bold text-center mb-12 text-purple-900"
           variants={{
             hidden: { y: -50, opacity: 0 },
             visible: { y: 0, opacity: 1 }
@@ -313,7 +312,7 @@ function HowItWorksSection() {
     >
       <div className="container mx-auto text-center">
         <motion.h2
-          className="text-4xl font-bold mb-12"
+          className="text-4xl font-bold mb-12 text-white"
           variants={{
             hidden: { y: -50, opacity: 0 },
             visible: { y: 0, opacity: 1 }
@@ -347,7 +346,7 @@ function StepCard({ number, text }) {
       >
         {number}
       </motion.div>
-      <p className="text-xl">{text}</p>
+      <p className="text-xl text-white">{text}</p>
     </motion.div>
   )
 }
